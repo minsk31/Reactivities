@@ -6,9 +6,10 @@ interface Props {
     activity: IActivity | undefined
     closeForm: () => void;
     createOrEdit: (activity: IActivity) => void;
+    submitting: boolean;
 }
 
-const ActivityForm = ({ activity: selectedActivity, closeForm , createOrEdit}: Props) => {
+const ActivityForm = ({ activity: selectedActivity, closeForm , createOrEdit, submitting}: Props) => {
 
     const initialState = selectedActivity ?? {
         id: '',
@@ -37,11 +38,11 @@ const ActivityForm = ({ activity: selectedActivity, closeForm , createOrEdit}: P
                 <Form.Input placeholder='Title' name='title' value={activity?.title} onChange={HandleInputChange}></Form.Input>
                 <FormTextArea placeholder='Description' name='description' value={activity?.description} onChange={HandleInputChange}></FormTextArea>
                 <FormInput placeholder='Category' name='category' value={activity?.category} onChange={HandleInputChange}></FormInput>
-                <FormInput placeholder='Date' name='date' value={activity?.date} onChange={HandleInputChange}></FormInput>
+                <FormInput  type='date' placeholder='Date' name='date' value={activity?.date} onChange={HandleInputChange}></FormInput>
                 <FormInput placeholder='City' name='city' value={activity?.city} onChange={HandleInputChange}></FormInput>
                 <FormInput placeholder='Venue' name='venue' value={activity?.venue} onChange={HandleInputChange}></FormInput>
-                <Button floated="right" positive type="submit" content="Submit"></Button>
-                <Button onClick={closeForm} floated="right" type="button" content="Cancel"></Button>
+                <Button loading={submitting} disabled={submitting} floated="right" positive type="submit" content="Submit"></Button>
+                <Button loading={submitting} disabled={submitting} onClick={closeForm} floated="right" type="button" content="Cancel"></Button>
             </Form>
         </Segment>
     )
