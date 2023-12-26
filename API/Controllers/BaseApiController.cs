@@ -1,3 +1,4 @@
+using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,5 +12,22 @@ namespace API.Controllers
 
         protected IMediator Mediator => _mediator ??=
          HttpContext.RequestServices.GetService<IMediator>();
+
+        protected ActionResult HandleResult<T>(Result<T> result)
+        {
+            if (result == null || result.isSuccess && result.Value == null)
+            {
+                return NotFound();
+            }
+
+            if (result.isSuccess && result.Value != null)
+            {
+                return Ok(result.Value);
+            }
+
+            return BadRequest(result.Error);
+        }
     }
+
+
 }
