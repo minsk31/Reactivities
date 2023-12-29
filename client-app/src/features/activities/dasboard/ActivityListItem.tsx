@@ -34,7 +34,7 @@ const ActivityListItem = ({ activity }: Props) => {
             </Segment>
             <Segment>
                 <span>
-                    <Icon name="clock" /> {activity.date}
+                    <Icon name="clock" /> {activity.date?.toDateString()}
                     <Icon name="marker" /> {activity.venue}
                 </span>
             </Segment>

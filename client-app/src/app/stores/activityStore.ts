@@ -15,13 +15,13 @@ export default class ActivityStore {
     }
 
     get activitiesByDates() {
-        return Array.from(this.activitiesRegistry.values()).sort(x => Date.parse(x.date));
+        return Array.from(this.activitiesRegistry.values()).sort(x => x.date?.getTime() ?? 0);
     }
 
     get groupedActivities(){
         return Object.entries(
         this.activitiesByDates.reduce((activities, activity) => {
-            const date = activity.date;
+            const date = activity.date!.getDay();
             activities[date] = activities[date] ? [...activities[date], activity] : [activity];
             
             return activities;
@@ -33,7 +33,7 @@ export default class ActivityStore {
             const activities = await agent.Activities.list();
             runInAction(() => {
                 activities.forEach(activity => {
-                    activity.date = activity.date.split('T')[0];
+                    activity.date = new Date(activity.date!);
                     this.activitiesRegistry.set(activity.id, activity)
                 });
             });
