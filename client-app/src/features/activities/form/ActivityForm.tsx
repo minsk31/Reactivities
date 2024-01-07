@@ -81,7 +81,6 @@ const ActivityForm = () => {
                     </Form>
                 )}
             </Formik>
-
         </Segment>
     )
 };

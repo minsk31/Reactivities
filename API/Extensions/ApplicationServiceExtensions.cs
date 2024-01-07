@@ -1,4 +1,3 @@
-using API.Middleware;
 using Application.Activities;
 using Application.Core;
 using FluentValidation;

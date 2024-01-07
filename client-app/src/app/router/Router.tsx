@@ -6,12 +6,17 @@ import ActivityDetails from '../../features/activities/details/ActivityDetails';
 import TestErrors from '../../features/errors/TestError';
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
+import LoginForm from '../../features/users/LoginForm';
 
 export const routes: RouteObject[] = [
     {
         path: "/",
         element: <App />,
         children: [
+            {
+                path: "login",
+                element: <LoginForm />
+            },
             {
                 path: "activities",
                 element: <ActivityDashboard />

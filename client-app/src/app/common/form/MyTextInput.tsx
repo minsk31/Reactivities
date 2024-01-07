@@ -4,7 +4,8 @@ import style from '../form/MyTextInput.module.css'
 interface Props{
     placeholder: string,
     name: string,
-    labell?: string
+    labell?: string,
+    type?: string
 }
 
 const MyTextInput = (props: Props) => {
