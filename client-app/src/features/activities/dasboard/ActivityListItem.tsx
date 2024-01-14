@@ -1,33 +1,45 @@
 import { Link } from "react-router-dom";
-import { Item, ItemDescription, Button, SegmentGroup, Segment, ItemGroup, ItemImage, ItemContent, ItemHeader, Icon } from "semantic-ui-react";
+import { Item, ItemDescription, Button, SegmentGroup, Segment, ItemGroup, ItemImage, ItemContent, ItemHeader, Icon, Label } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/activity";
-import { SyntheticEvent, useState } from "react";
-import { useStore } from "../../../app/stores/store";
+import ActivityListItemAtendees from "./ActivityListItemAtendees";
+import { observer } from "mobx-react-lite";
 
 interface Props {
     activity: IActivity
 }
 
 const ActivityListItem = ({ activity }: Props) => {
-    const { activityStore } = useStore();
-    const [target, setTarget] = useState('');
-
-    function handleActivityDelete(event: SyntheticEvent<HTMLButtonElement>, id: string) {
-        setTarget(event.currentTarget.name)
-        activityStore.deleteActivity(id);
-    }
 
     return (
         <SegmentGroup>
             <Segment>
+                {activity.isCancelled && (
+                    <Label attached="top" color="red" content="Canceled" style={{ position: top }}>
+
+                    </Label>
+                )}
                 <ItemGroup>
                     <Item>
-                        <ItemImage size='tiny' circular src='/assets/user.png'></ItemImage>
+                        <ItemImage style={{marginBottom: 5}} size='tiny' circular src='/assets/user.png'></ItemImage>
                         <ItemContent>
                             <ItemHeader as={Link} to={`/activities/${activity?.id}`}>
                                 {activity.title}
                             </ItemHeader>
-                            <ItemDescription>Hosted by Bob</ItemDescription>
+                            <ItemDescription>Hosted by {activity.host?.displayName}</ItemDescription>
+                            {activity.isHost && (
+                                <ItemDescription>
+                                    <Label basic color="orange">
+                                        You are hosting this activity
+                                    </Label>
+                                </ItemDescription>
+                            )}
+                            {activity.isGoing && !activity.isHost && (
+                                <ItemDescription>
+                                    <Label basic color="green">
+                                        You are going to this activity
+                                    </Label>
+                                </ItemDescription>
+                            )}
                         </ItemContent>
                     </Item>
                 </ItemGroup>
@@ -38,7 +50,9 @@ const ActivityListItem = ({ activity }: Props) => {
                     <Icon name="marker" /> {activity.venue}
                 </span>
             </Segment>
-            <Segment secondary>Attendees go here</Segment>
+            <Segment secondary>
+                <ActivityListItemAtendees attendees={activity.attendees!} />
+            </Segment>
             <Segment clearing>
                 <span>{activity.description}</span>
                 <Button as={Link}
@@ -51,4 +65,4 @@ const ActivityListItem = ({ activity }: Props) => {
     )
 };
 
-export default ActivityListItem;
+export default observer(ActivityListItem);

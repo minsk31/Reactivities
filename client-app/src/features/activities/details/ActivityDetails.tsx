@@ -20,9 +20,9 @@ export default observer(function ActivityDetails() {
             setTimeout(() => { loadActivity(id) }, 500)
         }
 
-    }, [loadActivity]);
+    }, [id, loadActivity]);
 
-    if (loadInitial) return <LoadingComponent content='Loading activity details'></LoadingComponent>
+    if (loadInitial || !selectedActivity) return <LoadingComponent content='Loading activity details'></LoadingComponent>
 
     return (
         <Grid>
@@ -32,7 +32,7 @@ export default observer(function ActivityDetails() {
                 <ActivityDetailedChat />
             </GridColumn>
             <GridColumn width={6}>
-                <ActivityDetailedSidebar />
+                    <ActivityDetailedSidebar activity={selectedActivity!}/>
             </GridColumn>
         </Grid>
     )

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { IActivity } from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Formik, Form } from "formik";
 import MyTextInput from "../../../app/common/form/MyTextInput";
@@ -19,15 +19,7 @@ const ActivityForm = () => {
     const { loading, loadActivity, loadInitial } = activityStore;
     const { id } = useParams();
     const navigate = useNavigate();
-    const [activity, setActivity] = useState<IActivity>({
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        date: null,
-        city: '',
-        venue: ''
-    });
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     const validationSchema = Yup.object({
         title: Yup.string().required('The activity title is required'),
@@ -41,15 +33,15 @@ const ActivityForm = () => {
     useEffect(() => {
 
         if (id) {
-            loadActivity(id).then(activity => setActivity(activity!))
+            loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)))
         }
 
     }, [id, loadActivity]);
 
 
-    function HandleFormSubmit(activity: IActivity) {
+    function HandleFormSubmit(activity: ActivityFormValues) {
         activityStore.upsertActivity(activity)
-            .then((activityId: string) => navigate(`/activities/${activityId}`));
+            .then((activityId: string | undefined) => navigate(`/activities/${activityId}`));
     }
 
     if (loadInitial) return <LoadingComponent content='Loading activity form'></LoadingComponent>
@@ -76,8 +68,8 @@ const ActivityForm = () => {
                           <Header  content='Location Details' sub color="teal"/>
                         <MyTextInput placeholder='City' name='city' ></MyTextInput>
                         <MyTextInput placeholder='Venue' name='venue' ></MyTextInput>
-                        <Button loading={loading} disabled={isSubmitting || !dirty || !isValid} floated="right" positive type="submit" content="Submit"></Button>
-                        <Button as={Link} to='/activities' loading={loading} disabled={loading} floated="right" type="button" content="Cancel"></Button>
+                        <Button loading={isSubmitting} disabled={isSubmitting || !dirty || !isValid} floated="right" positive type="submit" content="Submit"></Button>
+                        <Button as={Link} to='/activities' loading={isSubmitting} disabled={loading} floated="right" type="button" content="Cancel"></Button>
                     </Form>
                 )}
             </Formik>
