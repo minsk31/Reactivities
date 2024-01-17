@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using API.Extensions;
 using API.Middleware;
 using Domain;
@@ -17,6 +16,7 @@ builder.Services.AddControllers( opt => {
     opt.Filters.Add(new AuthorizeFilter(policy));
 });//.AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
+builder.Services.AddConfiguration(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 
