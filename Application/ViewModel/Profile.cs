@@ -9,6 +9,6 @@ namespace Application.ViewModel
         public string Bio { get; set; }
         public string Image { get; set; }
         public byte[] ImageRaw { get; set; }
-        public ICollection<Photo> Photos {get; set;}
+        public ICollection<PhotoDTO> Photos {get; set;}
     }
 }

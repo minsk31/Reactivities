@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
+using Application.ViewModel;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -15,12 +16,12 @@ namespace Application.Photos
 {
     public class Add
     {
-        public class Command : IRequest<Result<Photo>>
+        public class Command : IRequest<Result<PhotoDTO>>
         {
             public IFormFile File { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Result<Photo>>
+        public class Handler : IRequestHandler<Command, Result<PhotoDTO>>
         {
             private readonly DataContext _context;
             private readonly IPhotoAccessor _photoAccessor;
@@ -35,7 +36,7 @@ namespace Application.Photos
                 _mapper = mapper;
             }
 
-            public async Task<Result<Photo>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<PhotoDTO>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users.Include(x => x.Photos)
                   .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
@@ -44,7 +45,7 @@ namespace Application.Photos
 
                 if (!result.isSuccess)
                 {
-                    return Result<Photo>.Failure($"Failed to create a photo: {result.Error}");
+                    return Result<PhotoDTO>.Failure($"Failed to create a photo: {result.Error}");
                 }
 
                 var photo = new Photo();
@@ -61,12 +62,12 @@ namespace Application.Photos
 
                 if (!saveResult)
                 {
-                    return Result<Photo>.Failure("Failed to add photo");
+                    return Result<PhotoDTO>.Failure("Failed to add photo");
                 }
 
-                photo.Bytes = null;
-
-                return Result<Photo>.Success(photo);
+                var photoDTO = new PhotoDTO();
+                _mapper.Map(photo, photoDTO);
+                return Result<PhotoDTO>.Success(photoDTO);
             }
         }
     }
