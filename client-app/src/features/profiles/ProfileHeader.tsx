@@ -1,5 +1,6 @@
 import { Button, Divider, Grid, Header, Item, ItemImage, Reveal, RevealContent, Segment, Statistic, StatisticGroup } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
+import { observer } from "mobx-react-lite";
 
 interface Props{
     profile: Profile;
@@ -41,4 +42,4 @@ const ProfileHeader = ({profile}: Props) => {
     )
 };
 
-export default ProfileHeader;
+export default observer(ProfileHeader);

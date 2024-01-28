@@ -29,3 +29,15 @@ export class Profile implements IProfile{
     image?: string | undefined
     bio?: string | undefined
 }
+
+export class ProfileFormValues {
+    displayName: string = ''
+    bio?: string = ''
+  
+    constructor(profile?: Profile) {
+      if (profile) {
+        this.displayName = profile.displayName
+        this.bio = profile.bio
+      }
+    }
+  }
