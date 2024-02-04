@@ -28,6 +28,12 @@ namespace Application.Core
 
             CreateMap<Photo, PhotoDTO>()
             .ForMember(d => d.Image, o => o.MapFrom(s => ImageHelper.GetSourceFromBytes(s.Bytes)));
+
+            CreateMap<Comment, CommentDTO>()
+            .ForMember(d => d.Image,
+             o => o.MapFrom(s => ImageHelper.GetSourceFromBytes(s.Author.Photos.FirstOrDefault(x => x.IsMain).Bytes)))
+            .ForMember(d => d.UserName, o => o.MapFrom(s => s.Author.UserName))
+            .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName));
         }
     }
 }

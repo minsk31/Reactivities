@@ -5,7 +5,7 @@ import { router } from "../router/Router";
 import {Store} from "../stores/store"
 import { User } from "../models/user";
 import { Login } from "../models/login";
-import { Photo, Profile, ProfileFormValues } from "../models/profile";
+import { Photo, Profile } from "../models/profile";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -105,7 +105,6 @@ const Profiles = {
     setMainPhoto: (id: string) => requests.post(`/photo/${id}/setmain`, {}),
     deletePhoto: (id: string) => requests.del(`/photo/${id}`)
 }
-
 const agent = {
     Activities,
     Account,

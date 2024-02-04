@@ -11,7 +11,7 @@ import ActivityDetailedChat from "./ActivityDetailedChat";
 
 export default observer(function ActivityDetails() {
     const { activityStore } = useStore();
-    const { selectedActivity, loadActivity, loadInitial } = activityStore;
+    const { selectedActivity, loadActivity, loadInitial, clearSelectedActivity } = activityStore;
     const { id } = useParams();
 
     useEffect(() => {
@@ -20,7 +20,9 @@ export default observer(function ActivityDetails() {
             setTimeout(() => { loadActivity(id) }, 500)
         }
 
-    }, [id, loadActivity]);
+        return () => clearSelectedActivity();
+
+    }, [id, loadActivity, clearSelectedActivity]);
 
     if (loadInitial || !selectedActivity) return <LoadingComponent content='Loading activity details'></LoadingComponent>
 
@@ -29,7 +31,7 @@ export default observer(function ActivityDetails() {
             <GridColumn width={10}>
                 <ActivityDetailedHeader activity={selectedActivity!}/>
                 <ActivityDetailedInfo activity={selectedActivity!}/>
-                <ActivityDetailedChat />
+                <ActivityDetailedChat activityId={selectedActivity.id} />
             </GridColumn>
             <GridColumn width={6}>
                     <ActivityDetailedSidebar activity={selectedActivity!}/>

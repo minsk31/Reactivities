@@ -15,7 +15,7 @@ interface Props {
 const ProfileEditForm = ({ profile, submit}: Props) => {
     const { profileStore } = useStore();
     const { loading } = profileStore;
-    const [profileValues, setProfileValues] = useState<ProfileFormValues>(new ProfileFormValues());
+    const [, setProfileValues] = useState<ProfileFormValues>(new ProfileFormValues());
 
     const validationSchema = Yup.object({
         displayName: Yup.string().required('The profile display name is required'),

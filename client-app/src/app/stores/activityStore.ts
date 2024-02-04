@@ -25,7 +25,7 @@ export default class ActivityStore {
             this.activitiesByDates.reduce((activities, activity) => {
 
                 if (activity.date) {
-                    const date = activity.date.getDay();
+                    const date = activity.date?.getDay();
                     activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 }
 
@@ -60,6 +60,10 @@ export default class ActivityStore {
 
     selectActivity = (id: string) => {
         this.selectedActivity = this.activitiesRegistry.get(id)
+    }
+
+    clearSelectedActivity = () => {
+        this.selectedActivity = undefined;
     }
 
     upsertActivity = async (activity: ActivityFormValues) => {
