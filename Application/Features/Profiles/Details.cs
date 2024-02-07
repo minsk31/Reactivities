@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.Interfaces;
 using Application.ViewModel;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -24,20 +25,24 @@ namespace Application.Profiles
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
+            private readonly IUserAccessor userAccessor;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
                 _context = context;
                 _mapper = mapper;
+                this.userAccessor = userAccessor;
             }
 
-            public async Task<Result<ViewModel.Profile>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<ViewModel.Profile>> Handle(Query request,
+             CancellationToken cancellationToken)
             {
                 var result = await _context.Users
-                .ProjectTo<ViewModel.Profile>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(x => x.UserName == request.UserName);            
+                .ProjectTo<ViewModel.Profile>(_mapper.ConfigurationProvider,
+                     new { currentUsername = userAccessor.GetUserName() })
+                .FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
-                return Result<ViewModel.Profile>.Success(result); 
+                return Result<ViewModel.Profile>.Success(result);
             }
         }
     }

@@ -24,7 +24,7 @@ export default class ActivityStore {
         return Object.entries(
             this.activitiesByDates.reduce((activities, activity) => {
 
-                if (activity.date) {
+                if (typeof activity.date === 'object' && activity.date !== null && 'getDate' in activity.date) {
                     const date = activity.date?.getDay();
                     activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 }
@@ -32,6 +32,7 @@ export default class ActivityStore {
                 return activities;
             }, {} as { [key: string]: IActivity[] }))
     }
+    
     loadActicitvies = async () => {
         this.setLoadingInitial(true);
         try {
@@ -196,6 +197,17 @@ export default class ActivityStore {
             this.setLoading(false);
         }
 
+    }
+
+    updateAttendeeFollowing = (username: string) => {
+        this.activitiesRegistry.forEach(activity => {
+            activity.attendees?.forEach(attendee => {
+                if (attendee.userName === username) {
+                    attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+                    attendee.following = !attendee.following
+                }
+            })
+        })
     }
 
     private setActivity(activity: IActivity) {

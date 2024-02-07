@@ -3,15 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, Icon, Image } from "sem
 import { Profile } from "../../app/models/profile";
 import { Link } from "react-router-dom";
 import style from '../profiles/ProfileCard.module.css'
+import FollowButton from "./FollowButton";
 
 interface Props {
     profile: Profile
 }
 const ProfileCard = ({ profile }: Props) => {
-
-    function truncate(str: string, n: number){
-        return (str.length > n) ? str.slice(0, n-1) + '...' : str;
-      };
 
     return (
         <Card as={Link} to={`/profiles/${profile.userName}`}>
@@ -22,8 +19,9 @@ const ProfileCard = ({ profile }: Props) => {
             </CardContent>
             <CardContent>
                 <Icon name="user"></Icon>
-                20 followers
+                {profile.followersCount} followers
             </CardContent>
+            <FollowButton profile={profile}/>
         </Card>
     )
 };

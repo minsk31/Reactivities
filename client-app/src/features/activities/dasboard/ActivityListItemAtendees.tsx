@@ -8,6 +8,10 @@ interface Props {
     attendees: Profile[]
 }
 const ActivityListItemAtendees = ({ attendees }: Props) => {
+    const styles = {
+        borderColor: 'orange',
+        borderWidth: 2
+    }
 
     return (
         <List horizontal>
@@ -17,7 +21,11 @@ const ActivityListItemAtendees = ({ attendees }: Props) => {
                     key={x.userName}
                     trigger={
                         <ListItem key={x.userName} as={Link} to={`/profiles/${x.userName}`}>
-                            <Image circular size='mini' src={x.image || '/assets/user.png'}></Image>
+                            <Image circular size='mini'
+                             src={x.image || '/assets/user.png'}
+                             bordered
+                             style={x.following ? styles : null}
+                             ></Image>
                         </ListItem>
                     }
                 >

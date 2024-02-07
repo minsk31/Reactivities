@@ -4,7 +4,10 @@ export interface IProfile {
     userName: string,
     displayName: string,
     image?: string,
-    bio?: string
+    bio?: string,
+    following: boolean,
+    followersCount: number,
+    followingCount: number,
     photos?: Photo[]
 }
 
@@ -28,6 +31,9 @@ export class Profile implements IProfile{
     displayName: string
     image?: string | undefined
     bio?: string | undefined
+    following: boolean = false
+    followersCount: number = 0
+    followingCount: number = 0
 }
 
 export class ProfileFormValues {

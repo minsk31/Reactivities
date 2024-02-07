@@ -5,5 +5,8 @@ export interface User {
     displayName: string;
     token: string;
     image?: string;
+    following: boolean,
+    followersCount: number,
+    folowingCount: number,
     photos?: Photo[];
   }
