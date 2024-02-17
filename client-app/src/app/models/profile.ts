@@ -8,7 +8,8 @@ export interface IProfile {
     following: boolean,
     followersCount: number,
     followingCount: number,
-    photos?: Photo[]
+    photos?: Photo[],
+    userActivities?: UserActivity[]
 }
 
 export interface Photo {
@@ -16,6 +17,14 @@ export interface Photo {
     image: string,
     isMain: boolean,
     bytes: string
+}
+
+export interface UserActivity {
+  id: string
+  title: string
+  date: Date | null
+  category: string
+  hostUserName: string
 }
 
 export class Profile implements IProfile{
@@ -34,6 +43,7 @@ export class Profile implements IProfile{
     following: boolean = false
     followersCount: number = 0
     followingCount: number = 0
+    userActivities: UserActivity[] = []
 }
 
 export class ProfileFormValues {

@@ -10,6 +10,7 @@ namespace Application.Features.Activities
     {
         public bool IsGoing { get; set; }
         public bool IsHost { get; set; }
+        public string Predicate {get; set;}
 
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
     }

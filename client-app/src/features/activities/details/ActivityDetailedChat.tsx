@@ -6,7 +6,7 @@ import { ChatComment } from '../../../app/models/comments';
 import { Link } from 'react-router-dom';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from "yup";
-import {formatDistanceToNow} from 'date-fns'
+import { format, parseISO } from "date-fns";
 
 interface Props {
     activityId: string;
@@ -51,7 +51,7 @@ export default observer(function ActivityDetailedChat({ activityId }: Props) {
                                     {comment.displayName}
                                 </Comment.Author>
                                 <Comment.Metadata>
-                                    <div>{formatDistanceToNow(comment.createdAt)}</div>
+                                    <div>{format(comment.createdAt, 'yyyy-mm-dd')}</div>
                                 </Comment.Metadata>
                                 <Comment.Text style={{ whiteSpace: 'pre-wrap' }}>{comment.body}</Comment.Text>
                             </Comment.Content>

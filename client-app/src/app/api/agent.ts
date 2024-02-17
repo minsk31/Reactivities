@@ -5,7 +5,7 @@ import { router } from "../router/Router";
 import { Store } from "../stores/store"
 import { User } from "../models/user";
 import { Login } from "../models/login";
-import { Photo, Profile } from "../models/profile";
+import { Photo, Profile, UserActivity } from "../models/profile";
 import { PaginationResult } from "../models/pagination";
 
 const sleep = (delay: number) => {
@@ -84,7 +84,7 @@ const requests = {
 }
 
 const Activities = {
-    list: (params: URLSearchParams) => axios.get<PaginationResult<IActivity[]>>('/activities', {params}).then(responseBody),
+    list: (params: URLSearchParams) => axios.get<PaginationResult<IActivity[]>>('/activities', { params }).then(responseBody),
     details: (id: string) => requests.get<IActivity>(`/activities/${id}`),
     create: (activity: ActivityFormValues) => requests.post<IActivity>('/activities', activity),
     update: (id: string, activity: ActivityFormValues) => requests.put<IActivity>(`/activities/${id}`, activity),
@@ -100,6 +100,7 @@ const Account = {
 
 const Profiles = {
     get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+    getUserActivities: (username: string, predicate: string | null = null) => requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`),
     update: (profileFormValues: Partial<Profile>) => requests.put('/profiles', profileFormValues),
     uploadPhoto: (file: Blob) => {
         let formData = new FormData();
@@ -109,7 +110,6 @@ const Profiles = {
             headers: { 'Content-type': 'multipart/form-data' }
         })
     },
-
     setMainPhoto: (id: string) => requests.post(`/photo/${id}/setmain`, {}),
     deletePhoto: (id: string) => requests.del(`/photo/${id}`),
     updateFollowing: (userName: string) => requests.post(`/follow/${userName}`, {}),

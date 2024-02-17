@@ -14,9 +14,12 @@ namespace Application.Core
         {
             string currentUsername = null;
             CreateMap<Activity, Activity>();
+            
             CreateMap<Activity, ActivityDTO>()
             .ForMember(d => d.HostUserName, o => o.MapFrom(s =>
              s.Attendees.FirstOrDefault(x => x.IsHost).AppUser.UserName));
+
+            CreateMap<ActivityDTO, UserActivityDTO>();
 
             CreateMap<ActivityAttendee, AttendeeDTO>()
             .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
